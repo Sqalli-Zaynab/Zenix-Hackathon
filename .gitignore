@@ -1,2 +1,9 @@
 node_modules/
+backend/node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
 .env
+backend/.env
+backend.out.log
+backend.err.log

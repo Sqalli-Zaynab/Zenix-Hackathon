@@ -2,9 +2,8 @@
   <div class="container">
     <div class="site-footer__main">
       <div class="site-footer__brand-block">
-        <a class="site-footer__brand" href="/" aria-label="PathAI home">
-          <span class="site-footer__mark" aria-hidden="true"></span>
-          <span class="site-footer__brand-name">PathAI</span>
+        <a class="site-footer__brand" routerLink="/" aria-label="Afaq home">
+          <app-afaq-logo class="site-footer__logo" [dark]="true"></app-afaq-logo>
         </a>
 
         <p class="site-footer__description">
@@ -17,21 +16,21 @@
 
       <nav class="site-footer__column" aria-label="Platform">
         <h2>Platform</h2>
-        <a href="#how-it-works">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#footer">About</a>
+        <a routerLink="/" fragment="how-it-works">How it works</a>
+        <a routerLink="/" fragment="features">Features</a>
+        <a routerLink="/" fragment="footer">About</a>
       </nav>
 
       <nav class="site-footer__column" aria-label="Explore">
         <h2>Explore</h2>
-        <a href="#features">Career paths</a>
-        <a href="#features">Action plans</a>
-        <a href="#features">Opportunities</a>
+        <a routerLink="/" fragment="features">Career paths</a>
+        <a routerLink="/" fragment="features">Action plans</a>
+        <a routerLink="/" fragment="features">Opportunities</a>
       </nav>
     </div>
 
     <div class="site-footer__bottom">
-      <p>&copy; 2026 PathAI. All rights reserved.</p>
+      <p>&copy; 2026 Afaq. All rights reserved.</p>
       <p>Built at ENSET Challenge Hackathon 2026 by Team Zenix</p>
     </div>
   </div>

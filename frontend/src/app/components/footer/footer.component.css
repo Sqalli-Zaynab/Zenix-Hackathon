@@ -28,40 +28,11 @@
 .site-footer__brand {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  font-weight: 800;
-  font-size: 1.4rem;
-  letter-spacing: -0.03em;
+  --afaq-logo-width: 196px;
 }
 
-.site-footer__mark {
-  position: relative;
-  width: 18px;
-  height: 18px;
-  border-radius: 5px;
-  transform: rotate(45deg);
-  background: linear-gradient(135deg, #eef1ff 0%, #9fe7d0 100%);
-  box-shadow: 0 0 24px rgba(159, 231, 208, 0.18);
-}
-
-.site-footer__mark::before,
-.site-footer__mark::after {
-  content: '';
-  position: absolute;
-  inset: 50%;
-  width: 18px;
-  height: 2px;
-  border-radius: 999px;
-  background: inherit;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.site-footer__mark::after {
-  transform: translate(-50%, -50%) rotate(135deg);
-}
-
-.site-footer__brand-name {
-  color: #f4f6ff;
+.site-footer__logo {
+  transform: translateY(2px);
 }
 
 .site-footer__description {
@@ -156,7 +127,7 @@
   }
 
   .site-footer__brand {
-    font-size: 1.28rem;
+    --afaq-logo-width: 180px;
   }
 
   .site-footer__description {

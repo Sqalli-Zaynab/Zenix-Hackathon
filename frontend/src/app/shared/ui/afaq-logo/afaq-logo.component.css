@@ -1,0 +1,16 @@
+:host {
+  --afaq-logo-width: 188px;
+  display: inline-flex;
+  align-items: center;
+  width: var(--afaq-logo-width);
+  max-width: 100%;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}

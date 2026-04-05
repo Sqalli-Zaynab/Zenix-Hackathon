@@ -20,35 +20,11 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  font-weight: 800;
-  font-size: 1.2rem;
-  letter-spacing: -0.02em;
+  --afaq-logo-width: 176px;
 }
 
-.brand__mark {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  transform: rotate(45deg);
-  background: linear-gradient(135deg, #8b7ff0, #4ec69e);
-}
-
-.brand__mark::before,
-.brand__mark::after {
-  content: '';
-  position: absolute;
-  inset: 50%;
-  width: 18px;
-  height: 2px;
-  border-radius: 999px;
-  background: inherit;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.brand__mark::after {
-  transform: translate(-50%, -50%) rotate(135deg);
+.brand__logo {
+  transform: translateY(1px);
 }
 
 .site-nav {
@@ -76,6 +52,10 @@
 @media (max-width: 640px) {
   .site-header__inner {
     min-height: 72px;
+  }
+
+  .brand {
+    --afaq-logo-width: 156px;
   }
 
   .site-header__cta {

@@ -1,0 +1,235 @@
+<div class="results-page">
+  <main class="results-page__main">
+    <ng-container *ngIf="hasResults(); else emptyState">
+      <section class="results-summary-section section">
+        <div class="container">
+          <article class="results-summary-card panel">
+            <div class="results-summary-card__content">
+              <p class="results-summary-card__label">AI understood you as</p>
+              <h1 class="results-summary-card__title">{{ profileTitle() }}</h1>
+              <p class="results-summary-card__quote">{{ profileSummary() }}</p>
+
+              <div class="results-summary-card__traits">
+                <span
+                  *ngFor="let trait of traitTags(); let index = index"
+                  class="results-summary-card__trait"
+                  [ngClass]="'results-summary-card__trait--' + (index % 4)"
+                >
+                  {{ trait }}
+                </span>
+              </div>
+            </div>
+
+            <div class="results-summary-card__chart">
+              <p class="results-summary-card__metric-label">Skill level</p>
+              <p class="results-summary-card__metric-value">{{ skillLevelLabel() }}</p>
+              <p class="results-summary-card__metric-note">{{ readinessLabel() }}</p>
+
+              <svg
+                class="results-summary-card__radar"
+                viewBox="0 0 220 220"
+                role="img"
+                aria-label="Profile skill radar chart"
+              >
+                <g transform="translate(110 112)">
+                  <polygon
+                    *ngFor="let polygon of radarGridPolygons()"
+                    class="results-summary-card__grid"
+                    [attr.points]="polygon"
+                  ></polygon>
+
+                  <line
+                    *ngFor="let axis of radarAxes()"
+                    class="results-summary-card__axis"
+                    x1="0"
+                    y1="0"
+                    [attr.x2]="axis.lineX"
+                    [attr.y2]="axis.lineY"
+                  ></line>
+
+                  <polygon
+                    class="results-summary-card__shape"
+                    [attr.points]="radarShape()"
+                  ></polygon>
+
+                  <circle
+                    *ngFor="let axis of radarAxes()"
+                    class="results-summary-card__node"
+                    [attr.cx]="axis.lineX"
+                    [attr.cy]="axis.lineY"
+                    r="3.5"
+                  ></circle>
+
+                  <text
+                    *ngFor="let axis of radarAxes()"
+                    class="results-summary-card__axis-label"
+                    [attr.x]="axis.labelX"
+                    [attr.y]="axis.labelY"
+                  >
+                    {{ axis.label }}
+                  </text>
+                </g>
+              </svg>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="results-recommendations section">
+        <div class="container">
+          <header class="results-section-header">
+            <div>
+              <p class="section-label">Career recommendations</p>
+              <h2 class="section-title">The AI found 3 paths that fit you</h2>
+              <p class="section-subtitle">
+                Click a card to see your action plan, roadmap, and matched opportunities.
+              </p>
+            </div>
+
+            <button
+              class="btn btn--white results-export-button results-export-button--desktop"
+              type="button"
+              [disabled]="!plan()"
+              (click)="exportPlan()"
+            >
+              Export my plan
+            </button>
+          </header>
+
+          <div class="results-card-grid">
+            <button
+              *ngFor="let choice of topChoices(); trackBy: trackByChoice"
+              class="recommendation-card panel surface-card"
+              type="button"
+              [ngClass]="[
+                'recommendation-card--' + choice.label,
+                selectedChoice()?.id === choice.id ? 'recommendation-card--active' : ''
+              ]"
+              [attr.aria-pressed]="selectedChoice()?.id === choice.id"
+              (click)="selectCareer(choice.id)"
+            >
+              <div class="recommendation-card__top">
+                <span
+                  class="recommendation-card__icon"
+                  [ngClass]="getToneClasses(choice).iconClass"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path [attr.d]="getCareerIcon(choice.id)"></path>
+                  </svg>
+                </span>
+                <span
+                  class="recommendation-card__badge"
+                  [ngClass]="getToneClasses(choice).badgeClass"
+                >
+                  {{ choice.score }}% match
+                </span>
+              </div>
+
+              <h3 class="recommendation-card__title">{{ choice.title }}</h3>
+              <p class="recommendation-card__copy">{{ choice.shortDescription }}</p>
+
+              <div class="recommendation-card__why">
+                <p class="recommendation-card__why-label">Why you</p>
+                <p class="recommendation-card__why-copy">
+                  {{ choice.reasons[0] }}
+                  <ng-container *ngIf="choice.reasons[1]">
+                    {{ ' ' + choice.reasons[1] }}
+                  </ng-container>
+                </p>
+              </div>
+
+              <span class="recommendation-card__action">
+                View action plan
+                <span aria-hidden="true">&rarr;</span>
+              </span>
+            </button>
+          </div>
+
+          <article class="plan-panel panel surface-card" *ngIf="selectedChoice() as choice">
+            <header class="plan-panel__header">
+              <div class="plan-panel__header-copy">
+                <p class="section-label">Action plan</p>
+                <h3 class="plan-panel__title">{{ choice.title }} &mdash; Action plan</h3>
+                <p class="plan-panel__subtitle">
+                  {{ plan()?.explanation || 'The plan is being prepared for this path.' }}
+                </p>
+              </div>
+
+              <button
+                class="btn btn--white results-export-button"
+                type="button"
+                [disabled]="!plan()"
+                (click)="exportPlan()"
+              >
+                Export my plan
+              </button>
+            </header>
+
+            <p class="plan-panel__status" *ngIf="isGeneratingPlan()">
+              Building your roadmap and matching the best opportunities...
+            </p>
+            <p class="plan-panel__status plan-panel__status--error" *ngIf="planError()">
+              {{ planError() }}
+            </p>
+
+            <div class="plan-panel__layout" *ngIf="plan() as actionPlan">
+              <div class="plan-panel__roadmap">
+                <article class="roadmap-card" *ngFor="let block of planSections()">
+                  <p class="roadmap-card__label">{{ block.label }}</p>
+                  <h4 class="roadmap-card__title">{{ block.title }}</h4>
+
+                  <ul class="roadmap-card__list">
+                    <li *ngFor="let item of block.items">{{ item }}</li>
+                  </ul>
+                </article>
+              </div>
+
+              <aside class="plan-panel__opportunities">
+                <div class="plan-panel__opportunities-head">
+                  <p class="section-label">Opportunities</p>
+                  <p class="plan-panel__opportunities-copy">
+                    Aligned with your selected path and preferences.
+                  </p>
+                </div>
+
+                <div class="opportunity-list">
+                  <article
+                    class="opportunity-card"
+                    *ngFor="
+                      let opportunity of actionPlan.recommendedOpportunities;
+                      trackBy: trackByOpportunity
+                    "
+                  >
+                    <span class="opportunity-card__type">
+                      {{ opportunity.type }}
+                    </span>
+                    <h4 class="opportunity-card__title">{{ opportunity.title }}</h4>
+                    <p class="opportunity-card__meta">{{ opportunity.location }}</p>
+                    <p class="opportunity-card__description">{{ opportunity.description }}</p>
+                  </article>
+                </div>
+              </aside>
+            </div>
+          </article>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <section class="results-empty section">
+        <div class="container">
+          <article class="results-empty__card panel surface-card">
+            <p class="section-label">No analysis yet</p>
+            <h1 class="section-title">Start with your profile</h1>
+            <p class="section-subtitle">
+              Complete the discovery form first so Afaq can analyze your profile
+              and prepare recommendations.
+            </p>
+            <a class="btn btn--green btn--large" routerLink="/input">Go to input page</a>
+          </article>
+        </div>
+      </section>
+    </ng-template>
+  </main>
+</div>

@@ -1,28 +1,10 @@
 {
-  "name": "zenix-hackathon",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "name": "zenix-hackathon-workspace",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sqalli-Zaynab/Zenix-Hackathon.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Sqalli-Zaynab/Zenix-Hackathon/issues"
-  },
-  "homepage": "https://github.com/Sqalli-Zaynab/Zenix-Hackathon#readme",
-  "dependencies": {
-    "@langchain/core": "^1.1.39",
-    "@langchain/langgraph": "^1.2.7",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.0",
-    "express": "^5.2.1"
+    "dev": "npm --prefix frontend start",
+    "dev:frontend": "npm --prefix frontend start",
+    "dev:backend": "npm --prefix backend start",
+    "build:frontend": "npm --prefix frontend run build"
   }
 }

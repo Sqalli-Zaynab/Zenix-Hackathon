@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ng serve",
+    "start": "node scripts/start-dev.cjs",
+    "start:frontend": "ng serve",
     "build": "ng build"
   },
   "dependencies": {
@@ -12,6 +13,7 @@
     "@angular/core": "^17.3.0",
     "@angular/platform-browser": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "jspdf": "^4.2.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "^0.14.4"

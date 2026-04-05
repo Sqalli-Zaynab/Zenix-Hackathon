@@ -19,7 +19,10 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "assets": [],
+            "assets": [
+              "src/favicon.svg",
+              "src/favicon.ico"
+            ],
             "styles": [
               "src/styles.css"
             ]
@@ -35,7 +38,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb",
-                  "maximumError": "12kb"
+                  "maximumError": "13kb"
                 }
               ],
               "outputHashing": "all"
@@ -50,6 +53,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"

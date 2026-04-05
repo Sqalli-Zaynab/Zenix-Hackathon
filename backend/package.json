@@ -1,0 +1,21 @@
+{
+  "name": "zenix-hackathon-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node API and AI agent for the Zenix Hackathon project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@langchain/core": "^1.1.39",
+    "@langchain/langgraph": "^1.2.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1"
+  }
+}
