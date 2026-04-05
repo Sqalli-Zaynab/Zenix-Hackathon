@@ -226,9 +226,4 @@ The backend loads `.env` if present via `dotenv`, and supports:
 
 Built by **Team Zenix** for the **ENSET Challenge Hackathon 2026**.
 
-## Optional Next Docs
 
-The root README is enough to onboard a collaborator, but small follow-up READMEs inside `frontend/` and `backend/` could be useful later if you want:
-
-- frontend-specific component and routing notes
-- backend-specific API contract and agent/data notes
