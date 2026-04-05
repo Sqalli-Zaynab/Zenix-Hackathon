@@ -1,0 +1,653 @@
+<div class="analysis-page">
+  <app-header></app-header>
+
+  <main class="analysis-page__main">
+    <section class="analysis-intro">
+      <div class="container analysis-intro__inner">
+        <div class="analysis-intro__body">
+          <span class="analysis-intro__label">YOUR AI CAREER ANALYSIS</span>
+
+          <h1 class="analysis-intro__title">
+            <span class="analysis-intro__title-line">The AI needs to know</span>
+            <span class="analysis-intro__title-line">
+              <span class="analysis-intro__highlight highlight-green">who you are</span>
+            </span>
+            <span class="analysis-intro__title-line">to find your path.</span>
+          </h1>
+
+          <p class="analysis-intro__copy">
+            This is where the agent starts reasoning through your profile. Your
+            answers shape the direction, roadmap, and opportunities it can surface
+            for you.
+          </p>
+
+          <div class="analysis-intro__actions">
+            <button
+              class="btn btn--green btn--large analysis-intro__cta"
+              type="button"
+              (click)="scrollToSection('pics')"
+            >
+              Start now — it takes 2 minutes
+            </button>
+          </div>
+        </div>
+
+        <nav
+          class="analysis-intro__timeline"
+          aria-label="Input journey"
+          [style.--analysis-progress]="getProgressRatio()"
+        >
+          <button
+            *ngFor="let step of steps"
+            class="analysis-intro__step"
+            type="button"
+            [ngClass]="{
+              'analysis-intro__step--active': isStepActive(step.id),
+              'analysis-intro__step--completed': isStepCompleted(step.id)
+            }"
+            [attr.aria-current]="isStepActive(step.id) ? 'step' : null"
+            (click)="scrollToSection(step.id)"
+          >
+            <span class="analysis-intro__step-index">{{ step.number }}</span>
+            <span class="analysis-intro__step-copy">
+              <small>Step {{ step.number }}</small>
+              <strong>{{ step.title }}</strong>
+            </span>
+          </button>
+        </nav>
+      </div>
+    </section>
+
+    <form class="analysis-form" novalidate>
+      <div class="analysis-form__sections">
+        <aside
+          class="analysis-side-nav"
+          [class.analysis-side-nav--line-hidden]="isStepActive('pics')"
+          aria-label="Section navigator"
+          [style.--analysis-progress]="getProgressRatio()"
+        >
+          <div class="analysis-side-nav__rail">
+            <button
+              *ngFor="let step of steps"
+              class="analysis-side-step"
+              type="button"
+              [ngClass]="{
+                'analysis-side-step--active': isStepActive(step.id),
+                'analysis-side-step--completed': isStepCompleted(step.id)
+              }"
+              [attr.aria-current]="isStepActive(step.id) ? 'step' : null"
+              [attr.aria-label]="step.title"
+              (click)="scrollToSection(step.id)"
+            >
+              <span class="analysis-side-step__label">{{ step.title }}</span>
+              <span class="analysis-side-step__dot" aria-hidden="true"></span>
+            </button>
+          </div>
+        </aside>
+
+        <section #analysisSection class="analysis-part section" id="pics">
+        <div class="container">
+          <header class="analysis-part__header">
+            <p class="analysis-part__label section-label">PART 1 - PICS</p>
+            <h2 class="analysis-part__title section-title">Who are you, really?</h2>
+            <p class="analysis-part__subtitle section-subtitle">
+              Write freely - no right or wrong answers. The AI reads your words
+              carefully, not keywords.
+            </p>
+          </header>
+
+          <div class="analysis-grid analysis-grid--two">
+            <article class="field-card field-card--passions panel surface-card">
+              <div class="field-card__top">
+                <span class="field-pill">Passions</span>
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 20s-6-3.8-6-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 6 2.8C18 16.2 12 20 12 20Z" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3>What would you do even if you were not paid?</h3>
+              <p>The things that pull you in regardless of reward.</p>
+
+              <textarea
+                class="analysis-textarea field-control"
+                aria-label="Passions"
+                [value]="getListFieldValue('passions')"
+                (input)="onListFieldInput('passions', $any($event.target).value)"
+                placeholder="Building things, teaching, creating music, solving puzzles..."
+              ></textarea>
+            </article>
+
+            <article class="field-card field-card--interests panel surface-card">
+              <div class="field-card__top">
+                <span class="field-pill">Interests</span>
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="7" />
+                    <path d="M12 9v3.2l2.2 2.2" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3>What are you genuinely curious about?</h3>
+              <p>Topics you explore in your own time without being asked.</p>
+
+              <textarea
+                class="analysis-textarea field-control"
+                aria-label="Interests"
+                [value]="getListFieldValue('interests')"
+                (input)="onListFieldInput('interests', $any($event.target).value)"
+                placeholder="How AI works, why businesses succeed, human behavior..."
+              ></textarea>
+            </article>
+
+            <article class="field-card field-card--causes panel surface-card">
+              <div class="field-card__top">
+                <span class="field-pill">Causes</span>
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m12 19 7-7-3-3-4 4-4-4-3 3 7 7Z" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3>What problems or topics matter most to you?</h3>
+              <p>Injustices or challenges you would want to work on.</p>
+
+              <textarea
+                class="analysis-textarea field-control"
+                aria-label="Causes"
+                [value]="getListFieldValue('causes')"
+                (input)="onListFieldInput('causes', $any($event.target).value)"
+                placeholder="Education access, climate, mental health, inequality..."
+              ></textarea>
+            </article>
+
+            <article class="field-card field-card--strengths panel surface-card">
+              <div class="field-card__top">
+                <span class="field-pill">Strengths</span>
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m5 16 5-5 3 3 6-7" />
+                    <path d="M14 7h5v5" />
+                  </svg>
+                </span>
+              </div>
+
+              <h3>What are you naturally good at?</h3>
+              <p>Include soft skills - not just technical ones.</p>
+
+              <textarea
+                class="analysis-textarea field-control"
+                aria-label="Strengths"
+                [value]="getListFieldValue('strengths')"
+                (input)="onListFieldInput('strengths', $any($event.target).value)"
+                placeholder="Explaining clearly, spotting patterns, staying calm..."
+              ></textarea>
+            </article>
+          </div>
+        </div>
+        </section>
+
+        <section #analysisSection class="analysis-part section" id="context">
+        <div class="container">
+          <header class="analysis-part__header">
+            <p class="analysis-part__label section-label">PART 2 - CONTEXT</p>
+            <h2 class="analysis-part__title section-title">Where are you right now?</h2>
+            <p class="analysis-part__subtitle section-subtitle">
+              Your academic background helps the AI calibrate what's realistic
+              and what's next for you.
+            </p>
+          </header>
+
+          <div class="analysis-context">
+            <article class="analysis-card panel surface-card">
+              <p class="analysis-card__eyebrow">Academic level</p>
+
+              <div class="choice-list">
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="academic-level"
+                    [checked]="draft().academicLevel === 'high_school'"
+                    (change)="onAcademicLevelChange('high_school')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">High school</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="academic-level"
+                    [checked]="draft().academicLevel === 'undergraduate'"
+                    (change)="onAcademicLevelChange('undergraduate')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">University - undergraduate</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="academic-level"
+                    [checked]="draft().academicLevel === 'graduate'"
+                    (change)="onAcademicLevelChange('graduate')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">University - graduate</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="academic-level"
+                    [checked]="draft().academicLevel === 'self_taught'"
+                    (change)="onAcademicLevelChange('self_taught')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Self-taught</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="academic-level"
+                    [checked]="draft().academicLevel === 'bootcamp_certificate'"
+                    (change)="onAcademicLevelChange('bootcamp_certificate')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Bootcamp / certificate</span>
+                  </span>
+                </label>
+              </div>
+            </article>
+
+            <div class="analysis-stack">
+              <article class="analysis-card panel surface-card">
+                <div class="analysis-card__heading">
+                  <p class="analysis-card__eyebrow">Field of study</p>
+                  <span class="analysis-card__optional">optional</span>
+                </div>
+
+                <input
+                  class="analysis-input field-control"
+                  type="text"
+                  aria-label="Field of study"
+                  [value]="draft().fieldOfStudy"
+                  (input)="flow.updateDraftField('fieldOfStudy', $any($event.target).value)"
+                  placeholder="Software engineering, biology, economics..."
+                />
+              </article>
+
+              <article class="analysis-card panel surface-card">
+                <p class="analysis-card__eyebrow">Skill level</p>
+
+                <div class="segment-grid">
+                  <label class="segment-card">
+                    <input
+                      class="segment-card__input"
+                      type="radio"
+                      name="skill-level"
+                      [checked]="draft().skillLevel === 'beginner'"
+                      (change)="onSkillLevelChange('beginner')"
+                    />
+                    <span class="segment-card__surface">
+                      <strong>Beginner</strong>
+                      <small>Learning basics</small>
+                    </span>
+                  </label>
+
+                  <label class="segment-card">
+                    <input
+                      class="segment-card__input"
+                      type="radio"
+                      name="skill-level"
+                      [checked]="draft().skillLevel === 'intermediate'"
+                      (change)="onSkillLevelChange('intermediate')"
+                    />
+                    <span class="segment-card__surface">
+                      <strong>Intermediate</strong>
+                      <small>Building things</small>
+                    </span>
+                  </label>
+
+                  <label class="segment-card">
+                    <input
+                      class="segment-card__input"
+                      type="radio"
+                      name="skill-level"
+                      [checked]="draft().skillLevel === 'advanced'"
+                      (change)="onSkillLevelChange('advanced')"
+                    />
+                    <span class="segment-card__surface">
+                      <strong>Advanced</strong>
+                      <small>Specializing</small>
+                    </span>
+                  </label>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        </section>
+
+        <section #analysisSection class="analysis-part section" id="direction">
+        <div class="container">
+          <header class="analysis-part__header">
+            <p class="analysis-part__label section-label">PART 3 - DIRECTION</p>
+            <h2 class="analysis-part__title section-title">Where do you want to go?</h2>
+            <p class="analysis-part__subtitle section-subtitle">
+              Your goal and clarity level help the agent understand how to guide
+              you - whether to explore or to execute.
+            </p>
+          </header>
+
+          <article class="goal-card">
+            <div class="goal-card__pills">
+              <span class="goal-card__pill goal-card__pill--purple">Personal goal</span>
+              <span class="goal-card__pill goal-card__pill--green">Most powerful input</span>
+            </div>
+
+            <h3>Describe what you want to become or achieve</h3>
+            <p>
+              Write a sentence, a paragraph, a dream. The more specific you are,
+              the sharper your path will be.
+            </p>
+
+            <textarea
+              class="analysis-textarea analysis-textarea--goal field-control"
+              aria-label="Personal goal"
+              [value]="draft().personalGoal"
+              (input)="flow.updateDraftField('personalGoal', $any($event.target).value)"
+              placeholder="e.g. I want to build technology that helps people in rural areas access quality education. I'm drawn to both the human side and the technical challenge..."
+            ></textarea>
+          </article>
+
+          <div class="analysis-grid analysis-grid--two analysis-grid--tight">
+            <article class="analysis-card panel surface-card">
+              <p class="analysis-card__eyebrow">Career clarity</p>
+
+              <div class="choice-list">
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="career-clarity"
+                    [checked]="draft().careerClarity === 'i_dont_know'"
+                    (change)="onCareerClarityChange('i_dont_know')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I have no idea what I want</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="career-clarity"
+                    [checked]="draft().careerClarity === 'some_ideas'"
+                    (change)="onCareerClarityChange('some_ideas')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I have some rough ideas</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="career-clarity"
+                    [checked]="draft().careerClarity === 'i_know'"
+                    (change)="onCareerClarityChange('i_know')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I know exactly what I want</span>
+                  </span>
+                </label>
+              </div>
+            </article>
+
+            <article class="analysis-card panel surface-card">
+              <p class="analysis-card__eyebrow">Main challenge</p>
+
+              <div class="choice-list">
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="main-challenge"
+                    [checked]="draft().mainChallenge === 'i_dont_know_what_fits_me'"
+                    (change)="onMainChallengeChange('i_dont_know_what_fits_me')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I don't know what fits me</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="main-challenge"
+                    [checked]="draft().mainChallenge === 'i_dont_know_how_to_reach_my_goal'"
+                    (change)="onMainChallengeChange('i_dont_know_how_to_reach_my_goal')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I don't know how to reach my goal</span>
+                  </span>
+                </label>
+
+                <label class="choice-row">
+                  <input
+                    class="choice-row__input"
+                    type="radio"
+                    name="main-challenge"
+                    [checked]="draft().mainChallenge === 'i_cant_find_opportunities'"
+                    (change)="onMainChallengeChange('i_cant_find_opportunities')"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">I can't find the right opportunities</span>
+                  </span>
+                </label>
+              </div>
+            </article>
+
+            <article class="analysis-card analysis-card--full panel surface-card">
+              <p class="analysis-card__eyebrow">Work values</p>
+              <p class="analysis-card__copy">
+                Choose the kinds of outcomes and work conditions that matter most
+                to you.
+              </p>
+
+              <div class="value-chip-list">
+                <label class="value-chip" *ngFor="let option of valueOptions">
+                  <input
+                    class="value-chip__input"
+                    type="checkbox"
+                    [checked]="draft().values.includes(option.value)"
+                    (change)="onValueToggle(option.value, $any($event.target).checked)"
+                  />
+                  <span class="value-chip__surface">{{ option.label }}</span>
+                </label>
+              </div>
+            </article>
+          </div>
+        </div>
+        </section>
+
+        <section #analysisSection class="analysis-part section" id="opportunities">
+        <div class="container">
+          <header class="analysis-part__header">
+            <p class="analysis-part__label section-label">PART 4 - OPPORTUNITIES</p>
+            <h2 class="analysis-part__title section-title">What are you looking for?</h2>
+            <p class="analysis-part__subtitle section-subtitle">
+              The agent will match real opportunities to your path - hackathons,
+              internships, bootcamps, projects.
+            </p>
+          </header>
+
+          <div class="analysis-grid analysis-grid--two">
+            <article class="analysis-card panel surface-card">
+              <p class="analysis-card__eyebrow">Opportunity types</p>
+
+              <div class="choice-list">
+                <label class="choice-row choice-row--checkbox">
+                  <input
+                    class="choice-row__input"
+                    type="checkbox"
+                    [checked]="draft().opportunityTypes.includes('hackathons')"
+                    (change)="onOpportunityTypeToggle('hackathons', $any($event.target).checked)"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Hackathons</span>
+                  </span>
+                </label>
+
+                <label class="choice-row choice-row--checkbox">
+                  <input
+                    class="choice-row__input"
+                    type="checkbox"
+                    [checked]="draft().opportunityTypes.includes('internships')"
+                    (change)="onOpportunityTypeToggle('internships', $any($event.target).checked)"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Internships</span>
+                  </span>
+                </label>
+
+                <label class="choice-row choice-row--checkbox">
+                  <input
+                    class="choice-row__input"
+                    type="checkbox"
+                    [checked]="draft().opportunityTypes.includes('bootcamps')"
+                    (change)="onOpportunityTypeToggle('bootcamps', $any($event.target).checked)"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Bootcamps</span>
+                  </span>
+                </label>
+
+                <label class="choice-row choice-row--checkbox">
+                  <input
+                    class="choice-row__input"
+                    type="checkbox"
+                    [checked]="draft().opportunityTypes.includes('projects')"
+                    (change)="onOpportunityTypeToggle('projects', $any($event.target).checked)"
+                  />
+                  <span class="choice-row__surface">
+                    <span class="choice-row__mark"></span>
+                    <span class="choice-row__text">Projects</span>
+                  </span>
+                </label>
+              </div>
+            </article>
+
+            <article class="analysis-card panel surface-card">
+              <p class="analysis-card__eyebrow">Preferred location</p>
+
+              <div class="segment-grid segment-grid--compact">
+                <label class="segment-card">
+                  <input
+                    class="segment-card__input"
+                    type="radio"
+                    name="location"
+                    [checked]="draft().preferredLocation === 'local'"
+                    (change)="onPreferredLocationChange('local')"
+                  />
+                  <span class="segment-card__surface">
+                    <strong>Local</strong>
+                  </span>
+                </label>
+
+                <label class="segment-card">
+                  <input
+                    class="segment-card__input"
+                    type="radio"
+                    name="location"
+                    [checked]="draft().preferredLocation === 'remote'"
+                    (change)="onPreferredLocationChange('remote')"
+                  />
+                  <span class="segment-card__surface">
+                    <strong>Remote</strong>
+                  </span>
+                </label>
+
+                <label class="segment-card">
+                  <input
+                    class="segment-card__input"
+                    type="radio"
+                    name="location"
+                    [checked]="draft().preferredLocation === 'international'"
+                    (change)="onPreferredLocationChange('international')"
+                  />
+                  <span class="segment-card__surface">
+                    <strong>International</strong>
+                  </span>
+                </label>
+              </div>
+            </article>
+          </div>
+        </div>
+        </section>
+      </div>
+
+      <section class="analysis-final section">
+        <div class="container">
+          <div class="analysis-final__bar">
+            <p class="analysis-final__note">
+              Every word you write is read by the AI agent
+            </p>
+
+            <div class="analysis-final__actions">
+              <button class="btn btn--white" type="button" (click)="saveDraft()">
+                Save draft
+              </button>
+              <button
+                class="btn btn--green btn--large"
+                type="button"
+                [disabled]="isSubmitting()"
+                (click)="submitProfile()"
+              >
+                {{ isSubmitting() ? 'Analyzing...' : 'Analyze my profile' }}
+              </button>
+            </div>
+          </div>
+          <p class="analysis-final__status analysis-final__status--error" *ngIf="submitError()">
+            {{ submitError() }}
+          </p>
+          <p class="analysis-final__status" *ngIf="diagnosis() && topChoiceTitle() && !submitError()">
+            Analysis complete. Best-fit recommendation prepared:
+            <strong>{{ topChoiceTitle() }}</strong>
+          </p>
+        </div>
+      </section>
+    </form>
+  </main>
+</div>
